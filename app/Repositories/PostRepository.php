@@ -21,7 +21,13 @@ class PostRepository implements PostInterface
 
   public function createPost(array $data)
   {
-    return Post::create($data);
+    if (Post::create($data)) {
+      return response()->json([
+        'status' => true,
+        'message' => 'Post created successfully.',
+        'post' => $data
+      ], 201);
+    }
   }
 
   public function updatePost($id, array $data)

@@ -37,6 +37,16 @@ class PostController extends Controller
   public function store(Request $request)
   {
     //
+    $data = $request->validate([
+      'title' => 'required|string|max:255',
+      'content' => 'required|string',
+    ]);
+    if(!Auth::check()) {
+      return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    $data['user_id'] = Auth::id();
+    return $this->postInterface->createPost($data);
   }
 
   /**
